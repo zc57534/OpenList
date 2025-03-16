@@ -270,8 +270,8 @@ func (d *Open115) Put(ctx context.Context, dstDir model.Obj, file model.FileStre
 		return err
 	}
 	err = bucket.PutObject(resp.Object, tempF,
-		oss.Callback(base64.StdEncoding.EncodeToString([]byte(resp.Callback.Callback))),
-		oss.CallbackVar(base64.StdEncoding.EncodeToString([]byte(resp.Callback.CallbackVar))),
+		oss.Callback(base64.StdEncoding.EncodeToString([]byte(resp.Callback.Value.Callback))),
+		oss.CallbackVar(base64.StdEncoding.EncodeToString([]byte(resp.Callback.Value.CallbackVar))),
 	)
 	if err != nil {
 		return err
