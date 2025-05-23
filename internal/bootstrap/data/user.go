@@ -29,7 +29,8 @@ func initUser() {
 				Username: "admin",
 				Salt:     salt,
 				PwdHash:  model.TwoHashPwd(adminPassword, salt),
-				Role:     model.ADMIN,
+				//Role:     []int{model.ADMIN},
+				RoleInfo: []uint{model.ADMIN},
 				BasePath: "/",
 				Authn:    "[]",
 				// 0(can see hidden) - 7(can remove) & 12(can read archives) - 13(can decompress archives)
@@ -49,10 +50,11 @@ func initUser() {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			salt := random.String(16)
 			guest = &model.User{
-				Username:   "guest",
-				PwdHash:    model.TwoHashPwd("guest", salt),
-				Salt:       salt,
-				Role:       model.GUEST,
+				Username: "guest",
+				PwdHash:  model.TwoHashPwd("guest", salt),
+				Salt:     salt,
+				//Role:       []int{model.GUEST},
+				RoleInfo:   []uint{model.GUEST},
 				BasePath:   "/",
 				Permission: 0,
 				Disabled:   true,

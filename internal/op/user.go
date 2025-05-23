@@ -18,7 +18,7 @@ var adminUser *model.User
 
 func GetAdmin() (*model.User, error) {
 	if adminUser == nil {
-		user, err := db.GetUserByRole(model.ADMIN)
+		user, err := db.GetUserByRole([]int{model.ADMIN})
 		if err != nil {
 			return nil, err
 		}
@@ -29,7 +29,7 @@ func GetAdmin() (*model.User, error) {
 
 func GetGuest() (*model.User, error) {
 	if guestUser == nil {
-		user, err := db.GetUserByRole(model.GUEST)
+		user, err := db.GetUserByRole([]int{model.GUEST})
 		if err != nil {
 			return nil, err
 		}
@@ -38,7 +38,7 @@ func GetGuest() (*model.User, error) {
 	return guestUser, nil
 }
 
-func GetUserByRole(role int) (*model.User, error) {
+func GetUserByRole(role []int) (*model.User, error) {
 	return db.GetUserByRole(role)
 }
 

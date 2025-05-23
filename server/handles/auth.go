@@ -89,7 +89,10 @@ func loginHash(c *gin.Context, req *LoginReq) {
 
 type UserResp struct {
 	model.User
-	Otp bool `json:"otp"`
+	Otp         bool               `json:"otp"`
+	Permission  int32              `json:"permission"`
+	PathPattern []string           `json:"path_pattern"` // 目录路径模式，当Permission第14bit位为1时用到
+	AllowOpInfo model.AllowOpSlice `json:"allow_op_info"`
 }
 
 // CurrentUser get current user by token
@@ -103,7 +106,39 @@ func CurrentUser(c *gin.Context) {
 	if userResp.OtpSecret != "" {
 		userResp.Otp = true
 	}
+	permissions, err := op.GetPermissionByRoleIds(user.RoleInfo)
+	if err != nil || len(permissions) == 0 {
+		common.ErrorResp(c, err, 400)
+	}
+	if len(permissions) == 1 {
+		userResp.Permission = permissions[0].Permission
+		userResp.PathPattern = append(userResp.PathPattern, permissions[0].PathPattern)
+		userResp.AllowOpInfo = permissions[0].AllowOpInfo
+	} else {
+		var per int32
+		for _, perm := range permissions {
+			per |= perm.Permission
+			userResp.PathPattern = append(userResp.PathPattern, perm.PathPattern)
+			userResp.AllowOpInfo = append(userResp.AllowOpInfo, perm.AllowOpInfo...)
+		}
+		userResp.PathPattern = uniqStr(userResp.PathPattern)
+		userResp.AllowOpInfo = uniqStr(userResp.AllowOpInfo)
+		userResp.Permission = per
+	}
 	common.SuccessResp(c, userResp)
+}
+
+func uniqStr(str []string) []string {
+	seen := make(map[string]int)
+	j := 0
+	for i, v := range str {
+		if _, ok := seen[v]; !ok {
+			str[j] = str[i]
+			seen[v] = j
+			j++
+		}
+	}
+	return str[:j]
 }
 
 func UpdateCurrent(c *gin.Context) {

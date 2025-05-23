@@ -60,10 +60,10 @@ func UpdateUser(c *gin.Context) {
 		common.ErrorResp(c, err, 500)
 		return
 	}
-	if user.Role != req.Role {
+	/*if !reflect.DeepEqual(user.Role, req.Role) {
 		common.ErrorStrResp(c, "role can not be changed", 400)
 		return
-	}
+	}*/
 	if req.Password == "" {
 		req.PwdHash = user.PwdHash
 		req.Salt = user.Salt

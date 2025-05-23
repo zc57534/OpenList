@@ -2,6 +2,7 @@ package db
 
 import (
 	"encoding/base64"
+	"gorm.io/datatypes"
 
 	"github.com/alist-org/alist/v3/internal/model"
 	"github.com/alist-org/alist/v3/pkg/utils"
@@ -9,9 +10,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-func GetUserByRole(role int) (*model.User, error) {
-	user := model.User{Role: role}
+func GetUserByRole(role []int) (*model.User, error) {
+	var user model.User
+	/*user := model.User{Role: role}
 	if err := db.Where(user).Take(&user).Error; err != nil {
+		return nil, err
+	}*/
+	cond := datatypes.JSONArrayQuery("role").Contains(role)
+	err := db.Where(cond).Take(&user).Error
+	if err != nil {
 		return nil, err
 	}
 	return &user, nil

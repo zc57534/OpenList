@@ -131,8 +131,9 @@ func ladpRegister(username string) (*model.User, error) {
 		Password:   random.String(16),
 		Permission: int32(setting.GetInt(conf.LdapDefaultPermission, 0)),
 		BasePath:   setting.GetStr(conf.LdapDefaultDir),
-		Role:       0,
-		Disabled:   false,
+		//Role:       []int{0},
+		RoleInfo: []uint{0},
+		Disabled: false,
 	}
 	if err := db.CreateUser(user); err != nil {
 		return nil, err

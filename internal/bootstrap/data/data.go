@@ -6,6 +6,8 @@ func InitData() {
 	initUser()
 	initSettings()
 	initTasks()
+	initPermissions()
+	initRoles()
 	if flags.Dev {
 		initDevData()
 		initDevDo()

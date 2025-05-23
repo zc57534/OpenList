@@ -4,6 +4,8 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
 	"time"
 
 	"github.com/alist-org/alist/v3/internal/errs"
@@ -22,15 +24,16 @@ const (
 const StaticHashSalt = "https://github.com/alist-org/alist"
 
 type User struct {
-	ID       uint   `json:"id" gorm:"primaryKey"`                      // unique key
-	Username string `json:"username" gorm:"unique" binding:"required"` // username
-	PwdHash  string `json:"-"`                                         // password hash
-	PwdTS    int64  `json:"-"`                                         // password timestamp
-	Salt     string `json:"-"`                                         // unique salt
-	Password string `json:"password"`                                  // password
-	BasePath string `json:"base_path"`                                 // base path
-	Role     int    `json:"role"`                                      // user's role
-	Disabled bool   `json:"disabled"`
+	ID       uint           `json:"id" gorm:"primaryKey"`                      // unique key
+	Username string         `json:"username" gorm:"unique" binding:"required"` // username
+	PwdHash  string         `json:"-"`                                         // password hash
+	PwdTS    int64          `json:"-"`                                         // password timestamp
+	Salt     string         `json:"-"`                                         // unique salt
+	Password string         `json:"password"`                                  // password
+	BasePath string         `json:"base_path"`                                 // base path
+	Role     datatypes.JSON `gorm:"type:json;column:role" json:"role"`         // user's role
+	RoleInfo RoleIdSlice    `gorm:"-" json:"role_info"`
+	Disabled bool           `json:"disabled"`
 	// Determine permissions by bit
 	//   0:  can see hidden files
 	//   1:  can access without password
@@ -52,12 +55,60 @@ type User struct {
 	Authn      string `gorm:"type:text" json:"-"`
 }
 
+type RoleIdSlice []uint
+
+func (u *User) BeforeCreate(db *gorm.DB) (err error) {
+	if u.RoleInfo != nil {
+		u.Role, err = json.Marshal(u.RoleInfo)
+		if err != nil {
+			return
+		}
+	}
+	return nil
+}
+
+func (u *User) BeforeUpdate(db *gorm.DB) (err error) {
+	if u.RoleInfo != nil {
+		u.Role, err = json.Marshal(u.RoleInfo)
+		if err != nil {
+			return
+		}
+	}
+	return nil
+}
+
+func (u *User) AfterFind(db *gorm.DB) (err error) {
+	u.RoleInfo = RoleIdSlice{}
+	if len(u.Role) > 0 {
+		err = json.Unmarshal(u.Role, &u.RoleInfo)
+		if err != nil {
+			return
+		}
+	}
+	return nil
+}
+
 func (u *User) IsGuest() bool {
-	return u.Role == GUEST
+	isGuest := true
+	for _, role := range u.Role {
+		if role != GUEST {
+			isGuest = false
+			break
+		}
+	}
+	return isGuest
+	//return u.Role == GUEST
 }
 
 func (u *User) IsAdmin() bool {
-	return u.Role == ADMIN
+	isAdmin := true
+	for _, role := range u.Role {
+		if role != ADMIN {
+			isAdmin = false
+		}
+	}
+	return isAdmin
+	//return u.Role == ADMIN
 }
 
 func (u *User) ValidateRawPassword(password string) error {

@@ -161,6 +161,20 @@ func admin(g *gin.RouterGroup) {
 	index.POST("/stop", middlewares.SearchIndex, handles.StopIndex)
 	index.POST("/clear", middlewares.SearchIndex, handles.ClearIndex)
 	index.GET("/progress", middlewares.SearchIndex, handles.GetProgress)
+
+	permission := g.Group("/permission")
+	permission.POST("/create", handles.CreatePermission)
+	permission.GET("/list", handles.ListPermissions)
+	permission.POST("/update", handles.UpdatePermission)
+	permission.POST("/delete", handles.DeletePermission)
+
+	role := g.Group("/role")
+	role.POST("/create", handles.CreateRole)
+	role.GET("/list", handles.ListRoles)
+	role.POST("/update", handles.UpdateRole)
+	role.POST("/delete", handles.DeleteRole)
+	role.GET("/get_permission", handles.GetPermissionByRoleIds)
+
 }
 
 func _fs(g *gin.RouterGroup) {
