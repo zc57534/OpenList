@@ -14,12 +14,12 @@ import (
 )
 
 type MachineInfo struct {
-	SystemName    string
-	Version       string
-	KernelVersion string
-	Architecture  string
-	CpuCount      int
-	TotalMemory   uint64
+	SystemName    string `json:"system_name"`
+	Version       string `json:"version"`
+	KernelVersion string `json:"kernel_version"`
+	Architecture  string `json:"architecture"`
+	CpuCount      int    `json:"cpu_count"`
+	TotalMemory   uint64 `json:"total_memory"`
 }
 
 const urlSystemInfo = "https://dapi.alistgo.com/v0/system/info"
