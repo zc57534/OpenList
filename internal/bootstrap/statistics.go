@@ -65,7 +65,6 @@ func getOsNameAndVersion() (osName string, version string) {
 		//提取 ID 字段（如 "ubuntu"、"centos"）
 		if strings.HasPrefix(line, "ID=") {
 			osName = strings.Trim(line[3:], "\"")
-			break
 		}
 		if strings.HasPrefix(line, "VERSION_ID=") {
 			version = strings.Trim(line[11:], "\"")
