@@ -1,13 +1,23 @@
-FROM alpine:edge as builder
+# 构建阶段 - 使用官方 Go 镜像确保版本匹配
+FROM golang:1.24.1-alpine as builder
 LABEL stage=go-builder
 WORKDIR /app/
-RUN apk add --no-cache bash curl gcc git go musl-dev
+
+# 仅安装必要的构建工具（Go 镜像已包含大部分工具）
+RUN apk add --no-cache bash git
+
+#FROM alpine:3.19 as builder
+#LABEL stage=go-builder
+#WORKDIR /app/
+#RUN apk add --no-cache bash curl gcc git go musl-dev
 COPY go.mod go.sum ./
 RUN go mod download
 COPY ./ ./
-RUN bash build.sh release docker
+#RUN bash build.sh release docker
+RUN bash build.sh dev docker
 
-FROM alpine:edge
+# 运行阶段 - 使用稳定版 Alpine
+FROM alpine:3.19
 
 ARG INSTALL_FFMPEG=false
 ARG INSTALL_ARIA2=false
