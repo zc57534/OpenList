@@ -30,26 +30,26 @@ ldflags="\
 "
 
 FetchWebDev() {
-  pre_release_tag=$(curl --silent https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases | jq -r 'map(select(.prerelease)) | first | .tag_name')
+  pre_release_tag=$(curl -fsSL https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases | jq -r 'map(select(.prerelease)) | first | .tag_name')
   if [ -z "$pre_release_tag" ] || [ "$pre_release_tag" == "null" ]; then
     # fall back to latest release
-    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
+    pre_release_json=$(curl -fsSL -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
   else
-    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/tags/$pre_release_tag")
+    pre_release_json=$(curl -fsSL -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/tags/$pre_release_tag")
   fi
   pre_release_assets=$(echo "$pre_release_json" | jq -r '.assets[].browser_download_url')
   pre_release_tar_url=$(echo "$pre_release_assets" | grep "openlist-frontend-dist" | grep "\.tar\.gz$")
-  curl -L "$pre_release_tar_url" -o web-dist-dev.tar.gz
+  curl -fsSL "$pre_release_tar_url" -o web-dist-dev.tar.gz
   rm -rf public/dist && mkdir -p public/dist
   tar -zxvf web-dist-dev.tar.gz -C public/dist
   rm -rf web-dist-dev.tar.gz
 }
 
 FetchWebRelease() {
-  release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
+  release_json=$(curl -fsSL -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
   release_assets=$(echo "$release_json" | jq -r '.assets[].browser_download_url')
   release_tar_url=$(echo "$release_assets" | grep "openlist-frontend-dist" | grep "\.tar\.gz$")
-  curl -L "$release_tar_url" -o dist.tar.gz
+  curl -fsSL "$release_tar_url" -o dist.tar.gz
   rm -rf public/dist && mkdir -p public/dist
   tar -zxvf dist.tar.gz -C public/dist
   rm -rf dist.tar.gz
@@ -75,7 +75,7 @@ BuildDev() {
   FILES=(x86_64-linux-musl-cross aarch64-linux-musl-cross)
   for i in "${FILES[@]}"; do
     url="${BASE}${i}.tgz"
-    curl -L -o "${i}.tgz" "${url}"
+    curl -fsSL -o "${i}.tgz" "${url}"
     sudo tar xf "${i}.tgz" --strip-components 1 -C /usr/local
   done
   OS_ARCHES=(linux-musl-amd64 linux-musl-arm64)
@@ -110,7 +110,7 @@ PrepareBuildDockerMusl() {
   for i in "${FILES[@]}"; do
     url="${BASE}${i}.tgz"
     lib_tgz="build/${i}.tgz"
-    curl -L -o "${lib_tgz}" "${url}"
+    curl -fsSL -o "${lib_tgz}" "${url}"
     tar xf "${lib_tgz}" --strip-components 1 -C build/musl-libs
     rm -f "${lib_tgz}"
   done
@@ -174,7 +174,7 @@ BuildReleaseLinuxMusl() {
   FILES=(x86_64-linux-musl-cross aarch64-linux-musl-cross mips-linux-musl-cross mips64-linux-musl-cross mips64el-linux-musl-cross mipsel-linux-musl-cross powerpc64le-linux-musl-cross s390x-linux-musl-cross loongarch64-linux-musl-cross)
   for i in "${FILES[@]}"; do
     url="${BASE}${i}.tgz"
-    curl -L -o "${i}.tgz" "${url}"
+    curl -fsSL -o "${i}.tgz" "${url}"
     sudo tar xf "${i}.tgz" --strip-components 1 -C /usr/local
     rm -f "${i}.tgz"
   done
@@ -200,7 +200,7 @@ BuildReleaseLinuxMuslArm() {
   FILES=(arm-linux-musleabi-cross arm-linux-musleabihf-cross armel-linux-musleabi-cross armel-linux-musleabihf-cross armv5l-linux-musleabi-cross armv5l-linux-musleabihf-cross armv6-linux-musleabi-cross armv6-linux-musleabihf-cross armv7l-linux-musleabihf-cross armv7m-linux-musleabi-cross armv7r-linux-musleabihf-cross)
   for i in "${FILES[@]}"; do
     url="${BASE}${i}.tgz"
-    curl -L -o "${i}.tgz" "${url}"
+    curl -fsSL -o "${i}.tgz" "${url}"
     sudo tar xf "${i}.tgz" --strip-components 1 -C /usr/local
     rm -f "${i}.tgz"
   done
