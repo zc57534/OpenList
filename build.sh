@@ -1,3 +1,4 @@
+set -e
 appName="openlist"
 builtAt="$(date +'%F %T %z')"
 gitAuthor="OpenList <github-workflow@noreply.example.com>"
