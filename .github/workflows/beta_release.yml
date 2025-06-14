@@ -42,14 +42,15 @@ jobs:
           git tag -l
           npx changelogithub --output CHANGELOG.md
 
-      - name: Upload assets
+      - name: Upload assets to beta release
         uses: softprops/action-gh-release@v2
         with:
-          body_path: "See CHANGELOG.md"
+          body: "See CHANGELOG.md"
           files: CHANGELOG.md
           prerelease: true
           tag_name: beta
-      - name: Upload assets
+
+      - name: Upload assets to github artifact
         uses: actions/upload-artifact@v4
         with:
           name: beta changelog
@@ -112,7 +113,7 @@ jobs:
           bash build.sh zip ${{ matrix.hash }}
 
       # See above           
-      - name: Upload assets
+      - name: Upload assets to beta release
         uses: softprops/action-gh-release@v2
         with:
           files: build/compress/*
@@ -128,7 +129,7 @@ jobs:
           echo "Cleaned target: $CLEANED_TARGET"
           echo "cleaned_target=$CLEANED_TARGET" >> $GITHUB_ENV
 
-      - name: Upload assets
+      - name: Upload assets to github artifact
         uses: actions/upload-artifact@v4
         with:
           name: beta builds for ${{ env.cleaned_target }}
