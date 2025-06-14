@@ -32,7 +32,7 @@ ldflags="\
 
 FetchWebDev() {
   pre_release_tag=$(curl --silent https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases | jq -r 'map(select(.prerelease)) | first | .tag_name')
-  if [ -z "$pre_release_tag" ] && [ "$pre_release_tag" == "null" ]; then
+  if [ -z "$pre_release_tag" ] || [ "$pre_release_tag" == "null" ]; then
     # fall back to latest release
     pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
   else
