@@ -1,7 +1,7 @@
 set -e
 appName="openlist"
 builtAt="$(date +'%F %T %z')"
-gitAuthor="The OpenList Bot <bot@openlist.team>"
+gitAuthor="The OpenList Projects Contributors <noreply@openlist.team>"
 gitCommit=$(git log --pretty=format:"%h" -1)
 
 if [ "$1" = "dev" ]; then
