@@ -14,7 +14,7 @@ else
   # Always true if there's no tag
   version=$(git describe --abbrev=0 --tags 2>/dev/null || echo "v0.0.0")
   # TODO: Repleace this assets with our new frontend if needed
-  webVersion=$(wget -qO- -t1 -T2 "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+  webVersion=$(wget -qO- -t1 -T2 "https://api.github.com/repos/cxw620/OpenList-Frontend/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
 fi
 
 echo "backend version: $version"
@@ -30,30 +30,28 @@ ldflags="\
 "
 
 FetchWebDev() {
-  pre_release_tag=$(curl --silent https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases | jq -r 'map(select(.prerelease)) | first | .tag_name')
-  if [ $pre_release_tag == "null" ]; then
+  pre_release_tag=$(curl --silent https://api.github.com/repos/cxw620/OpenList-Frontend/releases | jq -r 'map(select(.prerelease)) | first | .tag_name')
+  if [ -z "$pre_release_tag" ] && [ "$pre_release_tag" == "null" ]; then
     # fall back to latest release
-    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
+    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/cxw620/OpenList-Frontend/releases/latest")
   else
-    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/tags/$pre_release_tag")
+    pre_release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/cxw620/OpenList-Frontend/releases/tags/$pre_release_tag")
   fi
   pre_release_assets=$(echo "$pre_release_json" | jq -r '.assets[].browser_download_url')
   pre_release_tar_url=$(echo "$pre_release_assets" | grep "openlist-frontend-dist" | grep "\.tar\.gz$")
   curl -L "$pre_release_tar_url" -o web-dist-dev.tar.gz
-  tar -zxvf web-dist-dev.tar.gz
-  rm -rf public/dist
-  mv -f web-dist-dev/dist public
-  rm -rf web-dist-dev web-dist-dev.tar.gz
+  rm -rf public/dist && mkdir -p public/dist
+  tar -zxvf web-dist-dev.tar.gz -C public/dist
+  rm -rf web-dist-dev.tar.gz
 }
 
 FetchWebRelease() {
-  release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/latest")
+  release_json=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/cxw620/OpenList-Frontend/releases/latest")
   release_assets=$(echo "$release_json" | jq -r '.assets[].browser_download_url')
   release_tar_url=$(echo "$release_assets" | grep "openlist-frontend-dist" | grep "\.tar\.gz$")
   curl -L "$release_tar_url" -o dist.tar.gz
-  tar -zxvf dist.tar.gz
-  rm -rf public/dist
-  mv -f dist public
+  rm -rf public/dist && mkdir -p public/dist
+  tar -zxvf dist.tar.gz -C public/dist
   rm -rf dist.tar.gz
 }
 
