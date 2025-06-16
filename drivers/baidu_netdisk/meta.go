@@ -11,8 +11,9 @@ type Addition struct {
 	OrderBy               string `json:"order_by" type:"select" options:"name,time,size" default:"name"`
 	OrderDirection        string `json:"order_direction" type:"select" options:"asc,desc" default:"asc"`
 	DownloadAPI           string `json:"download_api" type:"select" options:"official,crack,crack_video" default:"official"`
-	ClientID              string `json:"client_id" required:"true" default:"iYCeC9g08h5vuP9UqvPHKKSVrKFXGa1v"`
-	ClientSecret          string `json:"client_secret" required:"true" default:"jXiFMOPVPCWlO2M5CwWQzffpNPaGTRBG"`
+    UseOfficialAPI        bool   `json:"use_official_api" default:"true"`
+	ClientID              string `json:"client_id" default:""`
+	ClientSecret          string `json:"client_secret" default:""`
 	CustomCrackUA         string `json:"custom_crack_ua" required:"true" default:"netdisk"`
 	AccessToken           string
 	UploadThread          string `json:"upload_thread" default:"3" help:"1<=thread<=32"`
