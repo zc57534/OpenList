@@ -12,8 +12,8 @@ type Addition struct {
 	driver.RootPath
 	UseOnlineAPI bool   `json:"use_online_api" default:"true"`
 	APIAddress   string `json:"api_url_address" default:"https://api.oplist.org/yandexui/renewapi"`
-	ClientID     string `json:"client_id" required:"true" default:"a78d5a69054042fa936f6c77f9a0ae8b"`
-	ClientSecret string `json:"client_secret" required:"true" default:"9c119bbb04b346d2a52aa64401936b2b"`
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
 }
 
 var config = driver.Config{

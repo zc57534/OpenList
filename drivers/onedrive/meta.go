@@ -11,8 +11,8 @@ type Addition struct {
 	IsSharepoint bool   `json:"is_sharepoint"`
 	UseOnlineAPI bool   `json:"use_online_api" default:"true"`
 	APIAddress   string `json:"api_url_address" default:"https://api.oplist.org/onedrive/renewapi"`
-	ClientID     string `json:"client_id" required:"true"`
-	ClientSecret string `json:"client_secret" required:"true"`
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
 	RedirectUri  string `json:"redirect_uri" required:"true" default:"https://api.oplist.org/onedrive/callback"`
 	RefreshToken string `json:"refresh_token" required:"true"`
 	SiteId       string `json:"site_id"`

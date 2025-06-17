@@ -13,8 +13,8 @@ type Addition struct {
 	DownloadAPI           string `json:"download_api" type:"select" options:"official,crack,crack_video" default:"official"`
 	UseOnlineAPI          bool   `json:"use_online_api" default:"true"`
 	APIAddress            string `json:"api_url_address" default:"https://api.oplist.org/baiduyun/renewapi"`
-	ClientID              string `json:"client_id" default:""`
-	ClientSecret          string `json:"client_secret" default:""`
+	ClientID              string `json:"client_id"`
+	ClientSecret          string `json:"client_secret"`
 	CustomCrackUA         string `json:"custom_crack_ua" required:"true" default:"netdisk"`
 	AccessToken           string
 	UploadThread          string `json:"upload_thread" default:"3" help:"1<=thread<=32"`

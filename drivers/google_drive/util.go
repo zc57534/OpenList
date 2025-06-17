@@ -50,7 +50,7 @@ func (d *GoogleDrive) refreshToken() error {
 			SetQueryParams(map[string]string{
 				"refresh_ui": d.RefreshToken,
 				"server_use": "true",
-				"driver_txt": "baiduyun_go",
+				"driver_txt": "googleui_go",
 			}).
 			Get(u)
 		if err != nil {

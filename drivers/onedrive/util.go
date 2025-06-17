@@ -84,7 +84,7 @@ func (d *Onedrive) _refreshToken() error {
 			SetQueryParams(map[string]string{
 				"refresh_ui": d.RefreshToken,
 				"server_use": "true",
-				"driver_txt": "baiduyun_go",
+				"driver_txt": "onedrive_pr",
 			}).
 			Get(u)
 		if err != nil {

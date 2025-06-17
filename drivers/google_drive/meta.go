@@ -12,8 +12,8 @@ type Addition struct {
 	OrderDirection string `json:"order_direction" type:"select" options:"asc,desc"`
 	UseOnlineAPI   bool   `json:"use_online_api" default:"true"`
 	APIAddress     string `json:"api_url_address" default:"https://api.oplist.org/googleui/renewapi"`
-	ClientID       string `json:"client_id" required:"true" default:"202264815644.apps.googleusercontent.com"`
-	ClientSecret   string `json:"client_secret" required:"true" default:"X4Z3ca8xfWDb1Voo-F9a7ZxJ"`
+	ClientID       string `json:"client_id"`
+	ClientSecret   string `json:"client_secret"`
 	ChunkSize      int64  `json:"chunk_size" type:"number" default:"5" help:"chunk size while uploading (unit: MB)"`
 }
 

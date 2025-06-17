@@ -26,7 +26,7 @@ func (d *YandexDisk) refreshToken() error {
 			SetQueryParams(map[string]string{
 				"refresh_ui": d.RefreshToken,
 				"server_use": "true",
-				"driver_txt": "baiduyun_go",
+				"driver_txt": "yandexui_go",
 			}).
 			Get(u)
 		if err != nil {
