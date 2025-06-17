@@ -52,9 +52,6 @@ func (d *AliyundriveOpen) _refreshToken() (string, string, error) {
 	}
 	// 走原有的刷新逻辑
 	url := API_URL + "/oauth/access_token"
-	if d.OauthTokenURL != "" && d.ClientID == "" {
-		url = d.OauthTokenURL
-	}
 	//var resp base.TokenResp
 	var e ErrResp
 	res, err := base.RestyClient.R().
