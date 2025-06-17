@@ -43,6 +43,7 @@ func (d *Open115) _refreshToken() error {
 		op.MustSaveDriverStorage(d)
 		return nil
 	}
+	return nil
 }
 
 // do others that not defined in Driver interface
