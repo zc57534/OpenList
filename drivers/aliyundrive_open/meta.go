@@ -12,7 +12,7 @@ type Addition struct {
 	OrderBy            string `json:"order_by" type:"select" options:"name,size,updated_at,created_at"`
 	OrderDirection     string `json:"order_direction" type:"select" options:"ASC,DESC"`
 	OauthTokenURL      string `json:"oauth_token_url" default:"https://example.com/alist/ali_open/token"` // TODO: Replace this with a community hosted api endpoint
-	UseOnlineAPI       bool   `json:"use_official_api" default:"true"`
+	UseOnlineAPI       bool   `json:"use_online_api" default:"true"`
 	APIAddress         string `json:"api_url_address" default:"https://api.oplist.org/alicloud/renewapi"`
 	ClientID           string `json:"client_id" required:"false" help:"Keep it empty if you don't have one"`
 	ClientSecret       string `json:"client_secret" required:"false" help:"Keep it empty if you don't have one"`
