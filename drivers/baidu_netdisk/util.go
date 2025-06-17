@@ -31,8 +31,9 @@ func (d *BaiduNetdisk) refreshToken() error {
 }
 
 func (d *BaiduNetdisk) _refreshToken() error {
-	if d.UseOfficialAPI {
-		u := "https://api.oplist.org/baiduyun/renewapi"
+	// 使用在线API刷新Token，无需ClientID和ClientSecret
+	if d.UseOnlineAPI && len(d.APIAddress) > 0 {
+		u := d.APIAddress
 		var resp struct {
 			RefreshToken string `json:"refresh_token"`
 			AccessToken  string `json:"access_token"`
@@ -56,7 +57,10 @@ func (d *BaiduNetdisk) _refreshToken() error {
 		op.MustSaveDriverStorage(d)
 		return nil
 	}
-
+	// 使用本地客户端的情况下检查是否为空
+	if d.ClientID == "" || d.ClientSecret == "" {
+		return fmt.Errorf("empty ClientID or ClientSecret")
+	}
 	// 走原有的刷新逻辑
 	u := "https://openapi.baidu.com/oauth/2.0/token"
 	var resp base.TokenResp

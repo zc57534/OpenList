@@ -9,6 +9,8 @@ type Addition struct {
 	driver.RootPath
 	Region       string `json:"region" type:"select" required:"true" options:"global,cn,us,de" default:"global"`
 	IsSharepoint bool   `json:"is_sharepoint"`
+	UseOnlineAPI bool   `json:"use_official_api" default:"true"`
+	APIAddress   string `json:"api_url_address" default:"https://api.oplist.org/onedrive/renewapi"`
 	ClientID     string `json:"client_id" required:"true"`
 	ClientSecret string `json:"client_secret" required:"true"`
 	RedirectUri  string `json:"redirect_uri" required:"true" default:"https://api.oplist.org/onedrive/callback"`

@@ -10,6 +10,8 @@ type Addition struct {
 	OrderBy        string `json:"order_by" type:"select" options:"name,path,created,modified,size" default:"name"`
 	OrderDirection string `json:"order_direction" type:"select" options:"asc,desc" default:"asc"`
 	driver.RootPath
+	UseOnlineAPI bool   `json:"use_official_api" default:"true"`
+	APIAddress   string `json:"api_url_address" default:"https://api.oplist.org/yandexui/renewapi"`
 	ClientID     string `json:"client_id" required:"true" default:"a78d5a69054042fa936f6c77f9a0ae8b"`
 	ClientSecret string `json:"client_secret" required:"true" default:"9c119bbb04b346d2a52aa64401936b2b"`
 }
