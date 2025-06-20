@@ -3,10 +3,10 @@ name: release
 on:
   release:
     types: [ published ]
+permissions: write-all
 
 jobs:
   release:
-    permissions: write-all
     strategy:
       matrix:
         platform: [ ubuntu-latest ]

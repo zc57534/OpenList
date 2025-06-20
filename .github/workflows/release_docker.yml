@@ -21,6 +21,8 @@ env:
   IMAGE_IS_PROD: ${{ github.ref_type == 'tag' }}
   IMAGE_TAGS_BETA: |
     type=raw,value=beta,enable={{is_default_branch}}
+    
+permissions: write-all
 
 jobs:
   build_binary:
