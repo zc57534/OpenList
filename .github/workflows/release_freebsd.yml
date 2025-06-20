@@ -5,6 +5,7 @@ on:
     types: [ published ]
 
 jobs:
+  permissions: write-all
   release_freebsd:
     strategy:
       matrix:
