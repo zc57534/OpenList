@@ -3,10 +3,9 @@ name: release_linux_musl
 on:
   release:
     types: [ published ]
-
+permissions: write-all
 jobs:
   release_linux_musl:
-    permissions: write-all
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
