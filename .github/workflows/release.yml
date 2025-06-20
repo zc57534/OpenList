@@ -6,8 +6,7 @@ on:
 
 jobs:
   release:
-    permissions:
-      contents: write 
+    permissions: read-all
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
