@@ -6,6 +6,7 @@ on:
 
 jobs:
   release_linux_musl_arm:
+  permissions: write-all
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
