@@ -45,17 +45,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        uses: OpenListTeam/cgo-actions@v1.1.2
+        uses: zc57534/cgo-actions@v1.1.2
         with:
           targets: ${{ matrix.target }}
           musl-target-format: $os-$musl-$arch
           out-dir: build
           x-flags: |
-            github.com/OpenListTeam/OpenList/internal/conf.BuiltAt=$built_at
-            github.com/OpenListTeam/OpenList/internal/conf.GitAuthor=OpenList
-            github.com/OpenListTeam/OpenList/internal/conf.GitCommit=$git_commit
-            github.com/OpenListTeam/OpenList/internal/conf.Version=$tag
-            github.com/OpenListTeam/OpenList/internal/conf.WebVersion=dev
+            github.com/zc57534/OpenList/internal/conf.BuiltAt=$built_at
+            github.com/zc57534/OpenList/internal/conf.GitAuthor=OpenList
+            github.com/zc57534/OpenList/internal/conf.GitCommit=$git_commit
+            github.com/zc57534/OpenList/internal/conf.Version=$tag
+            github.com/zc57534/OpenList/internal/conf.WebVersion=dev
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
