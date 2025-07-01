@@ -6,14 +6,14 @@ import (
 	"slices"
 	"time"
 
-	"github.com/OpenListTeam/OpenList/internal/driver"
-	"github.com/OpenListTeam/OpenList/internal/errs"
-	"github.com/OpenListTeam/OpenList/internal/model"
-	"github.com/OpenListTeam/OpenList/internal/stream"
-	"github.com/OpenListTeam/OpenList/pkg/generic_sync"
-	"github.com/OpenListTeam/OpenList/pkg/singleflight"
-	"github.com/OpenListTeam/OpenList/pkg/utils"
-	"github.com/Xhofe/go-cache"
+	"github.com/OpenListTeam/OpenList/v4/internal/driver"
+	"github.com/OpenListTeam/OpenList/v4/internal/errs"
+	"github.com/OpenListTeam/OpenList/v4/internal/model"
+	"github.com/OpenListTeam/OpenList/v4/internal/stream"
+	"github.com/OpenListTeam/OpenList/v4/pkg/generic_sync"
+	"github.com/OpenListTeam/OpenList/v4/pkg/singleflight"
+	"github.com/OpenListTeam/OpenList/v4/pkg/utils"
+	"github.com/OpenListTeam/go-cache"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
@@ -573,8 +573,12 @@ func Put(ctx context.Context, storage driver.Driver, dstDirPath string, file mod
 		}
 	case driver.Put:
 		err = s.Put(ctx, parentDir, file, up)
-		if err == nil && !utils.IsBool(lazyCache...) {
-			ClearCache(storage, dstDirPath)
+		if err == nil {
+			if !utils.IsBool(lazyCache...) {
+				ClearCache(storage, dstDirPath)
+			} else {
+				addCacheObj(storage, dstDirPath, model.WrapObjName(file))
+			}
 		}
 	default:
 		return errs.NotImplement
